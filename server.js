@@ -1,8 +1,10 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var http = require('http');
-var async      = require('async');
+var express     = require('express');
+var app         = express();
+var bodyParser  = require('body-parser');
+var http        = require('http');
+var async       = require('async');
+var classifer   = require('./modules/classifier.js');
+
 
 var path = __dirname + '/views/';
 
@@ -20,10 +22,7 @@ var router = express.Router();
 
 var shejiji_api_url = '3d.shejijia.com'
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-// router.get('/', function(req, res) {
-//     res.render(path + "index.html");   
-// });
+// more routes for our API will happen here
 
 router.get('/api', function(req, res){
 	res.send(' This is a test ');
@@ -65,7 +64,9 @@ router.route('/api/product/:seek_id')
 	    }) 
 	});
 
-// more routes for our API will happen here
+var myClassifer = classifer();
+myClassifer.train();
+myClassifer.classify();
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
