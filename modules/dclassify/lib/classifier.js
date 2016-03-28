@@ -6,9 +6,9 @@ function Classifier(options) {
   this.applyInverse = options.applyInverse || false;
   this.probabilityThreshold = options.probabilityThreshold || 0.5;
   this.defaultCategory = options.defaultCategory || null;
-  this.tokens = {};
+  this.tokens = {}; // in each category, record the number of times a token appears in each category
   this.categoryCounts = {};
-  this.cattokenCounts = {};
+  this.cattokenCounts = {};  // record the 
   this.probabilities = {};
 }
 
@@ -151,8 +151,8 @@ Classifier.prototype = {
               if (probs[t] === 0) {
                 itemProbabilities[category] = itemProbabilities[category] * 0.01;
               } else {
-              itemProbabilities[category] = itemProbabilities[category] * probs[t];
-            }
+                itemProbabilities[category] = itemProbabilities[category] * probs[t];
+              }
             } else if (this.applyInverse) {
               itemProbabilities[category] = itemProbabilities[category] * (1 - probs[t]);
             }
