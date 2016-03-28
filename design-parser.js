@@ -1,21 +1,12 @@
 // Read Synchrously
 var fs = require("fs");
 var filename = process.argv[2];
+console.log(filename);
 if (!filename) {
 	console.log('Plase give the design json file.');
  	process.exit();
 }
 var design = JSON.parse(fs.readFileSync(filename));
-if (!design.hasOwnProperty('data')) {
-	console.log('File format is not correct.')
-	process.exit();
-}
-
-const ROOM = 'hsw.model.Room';
-
-var designData = design.data;
-var output = {};
-var rooms = {}; // {type:id}
 
 // for (var i = 0; i < var item = designData.length; i++) {;
 // 	var item = designData[i];
@@ -23,5 +14,12 @@ var rooms = {}; // {type:id}
 // 		rooms[item.]
 // 	}
 // }
-console.log("Output Content : \n"+ content);
+/* If the contenttype has secondory type (e.g. xxx/xxx), we leave out the secondary category. */
+Object.keys(design).forEach(function(key){
+	var characters = design[key].characters;
+	for (var i = 0; i < characters.length; i++) {
+		design[key].characters[i].contenttype = characters[i].contenttype.split('/')[0];
+	}
+});
+fs.writeFile(filename + '.simp.json', JSON.stringify(design)); 
 console.log("\n *EXIT* \n");

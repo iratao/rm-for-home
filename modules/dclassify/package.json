@@ -1,0 +1,77 @@
+{
+  "_args": [
+    [
+      "dclassify",
+      "/Users/taoy/Documents/workspace/rm-for-home"
+    ]
+  ],
+  "_from": "dclassify@latest",
+  "_id": "dclassify@1.1.2",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/dclassify",
+  "_nodeVersion": "4.1.1",
+  "_npmUser": {
+    "email": "drderidder@gmail.com",
+    "name": "drderidder"
+  },
+  "_npmVersion": "2.14.4",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "dclassify",
+    "raw": "dclassify",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/dclassify/-/dclassify-1.1.2.tgz",
+  "_shasum": "7ac531cc07aee7132093bbcd42e59427cea06d81",
+  "_shrinkwrap": null,
+  "_spec": "dclassify",
+  "_where": "/Users/taoy/Documents/workspace/rm-for-home",
+  "author": {
+    "name": "Darren DeRidder"
+  },
+  "bugs": {
+    "url": "https://github.com/73rhodes/dclassify/issues"
+  },
+  "dependencies": {},
+  "description": "Optimized Naive Bayesian classifier for NodeJS",
+  "devDependencies": {},
+  "directories": {
+    "test": "test"
+  },
+  "dist": {
+    "shasum": "7ac531cc07aee7132093bbcd42e59427cea06d81",
+    "tarball": "http://registry.npmjs.org/dclassify/-/dclassify-1.1.2.tgz"
+  },
+  "gitHead": "ef7445c7d1cee8e6f24ede79ce54a4f753e1e72e",
+  "homepage": "https://github.com/73rhodes/dclassify",
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "email": "paolo@async.ly",
+      "name": "hij1nx"
+    },
+    {
+      "email": "drderidder@gmail.com",
+      "name": "drderidder"
+    }
+  ],
+  "name": "dclassify",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/73rhodes/dclassify.git"
+  },
+  "scripts": {
+    "test": "node ./test/test.js"
+  },
+  "version": "1.1.2"
+}

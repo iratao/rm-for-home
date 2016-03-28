@@ -4,6 +4,7 @@ var bodyParser  = require('body-parser');
 var http        = require('http');
 var async       = require('async');
 var classifer   = require('./modules/classifier.js');
+var fs          = require("fs");
 
 
 var path = __dirname + '/views/';
@@ -64,9 +65,23 @@ router.route('/api/product/:seek_id')
 	    }) 
 	});
 
+
 var myClassifer = classifer();
-myClassifer.train();
-myClassifer.classify();
+// myClassifer.trainexample();
+// myClassifer.classifyexample();
+
+var designdir = './designjsons-simptype/';
+var trainers = fs.readdirSync(designdir);
+for (var i in trainers) {
+	if (trainers[i] === '.DS_Store') {continue;}
+	var design = JSON.parse(fs.readFileSync(designdir + trainers[i]));
+	myClassifer.train(design);
+}
+
+myClassifer.trainresult();
+
+var tester = JSON.parse(fs.readFileSync('./validators/olddesign5.json.simp.json'));
+myClassifer.classify(tester);
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

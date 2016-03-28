@@ -1,4 +1,4 @@
-var dclassify = require('dclassify');
+var dclassify = require('./dclassify');
 
 module.exports = function() {
 	var Classifier = dclassify.Classifier;
@@ -6,7 +6,7 @@ module.exports = function() {
     var Document   = dclassify.Document;
 	
 	var options = {
-        applyInverse: true
+        applyInverse: false
     };
 
     // create a classifier
@@ -14,34 +14,63 @@ module.exports = function() {
 
     /* datas format:
     {
-	    {
+	    id: {
 	        category: 'livingroom',
 	        id: 'xxx', // some unique identifier
-	        characters: ['c1', 'c2', 'c3', ...]
+	        characters: [{id: seekid, contenttype: 'c1'}, {id: seekid, contenttype: 'c2'}, {id: seekid, contenttype: 'c3'}, ...]
 	    }
     }
     */
     var train = function(datas) {
     	var dataset = new DataSet();
-    	for (var i = 0; i < datas.length; i++) {
-    		var data = datas[i];
-    		var item = new Document(data.id, data.characters);
-	    	dataset.add(data.category, data.characters);
-    	}
-    	classifier.train(data);
+    	Object.keys(datas).forEach(function(key) {
+    		var data = datas[key];
+    		var characters = [];
+    		for (var i = 0; i < data.characters.length; i++) {
+    			// if (characters.indexOf(data.characters[i].contenttype) === -1) {
+    				characters.push(data.characters[i].contenttype);
+    			// }
+    		}
+    		var item = new Document(data.id, characters);
+    		if (data.category === 'MasterBedroom' || data.category === 'SecondBedroom') {
+    			data.category = 'Bedroom';
+    		}
+    		dataset.add(data.category, item);
+    		
+    	});
+    	console.log('before train');
+    	classifier.train(dataset);
+    	console.log('after train');
+    };
+
+    var trainresult = function() {
+    	console.log(JSON.stringify(classifier.probabilities, null, 4));
     };
 
     /* data format:
     {
-        id: 'xxx', // some unique identifier
-        characters: ['c1', 'c2', 'c3', ...]
+        {
+	        id: 'xxx', // some unique identifier
+	        characters: [{id: seekid, contenttype: 'c1'}, {id: seekid, contenttype: 'c2'}, {id: seekid, contenttype: 'c3'}, ...]
+        }
     }
     */
-    var classify = function(data) {
-    	var item = new Document(data.id, data.characters);
-    	var result = classifier.classify(item);
-    	console.log(result);
-    }
+    var classify = function(datas) {
+    	console.log('in classify');
+    	Object.keys(datas).forEach(function(key) {
+    		var data = datas[key];
+    		var characters = [];
+    		for (var i = 0; i < data.characters.length; i++) {
+    			// if (characters.indexOf(data.characters[i].contenttype) === -1) {
+    				characters.push(data.characters[i].contenttype);
+    			// }
+    		}
+    		var item = new Document(data.id, characters);
+	    	var result = classifier.classify(item);
+	    	console.log('expected result: ' + data.category);
+	    	console.log(result);
+    	});
+    };
 
 	var trainexample = function() {
 		console.log('training now');
@@ -61,12 +90,19 @@ module.exports = function() {
 	    var item9 = new Document('item9', ['buffet','diningtable','chair', 'sofa']);
 
 	    var data = new DataSet();
-	    data.add('livingroom',  [item1, item2, item3]);    
+	    data.add('livingroom',  [item1, item2, item3]);   
+	    // classifier.train(data);
+	    
+	    // data = new DataSet();
 	    data.add('bedroom', [item4, item5, item6]);
+	    // classifier.train(data);
+	    
+	    // data = new DataSet();
 	    data.add('diningroom', [item7, item8, item9 ]);
+	    classifier.train(data);
 
 	    // train the classifier
-	    classifier.train(data);
+	    
 	    console.log('Classifier trained.');
 	    console.log(JSON.stringify(classifier.probabilities, null, 4));
 	};
@@ -82,5 +118,8 @@ module.exports = function() {
 	return {
 		train,
 		classify,
+		trainresult,
+		trainexample,
+		classifyexample,
 	}
 }
