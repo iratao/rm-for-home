@@ -132,7 +132,7 @@ Classifier.prototype = {
     };
   },
 
-  classify: function (item) {
+  classify: function (item, callback) {
     // for each category
     var category;
     var learnedProbabilities = this.probabilities;
@@ -190,6 +190,14 @@ Classifier.prototype = {
     var secondPlace = categoryScores[1];
     var timesMoreLikely = firstPlace.probability / secondPlace.probability;
     var probability = firstPlace.probability / sumOfProbabilities;
+
+    callback({
+      'category': firstPlace.category,
+      'probability': probability,
+      'timesMoreLikely': timesMoreLikely,
+      'secondCategory': secondPlace.category,
+      'probabilities': categoryScores
+    });
 
     return ({
       'category': firstPlace.category,

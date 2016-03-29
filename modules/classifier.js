@@ -55,7 +55,7 @@ module.exports = function() {
         }
     }
     */
-    var classify = function(datas) {
+    var classify = function(datas, callback) {
     	console.log('in classify');
     	Object.keys(datas).forEach(function(key) {
     		var data = datas[key];
@@ -66,7 +66,7 @@ module.exports = function() {
     			// }
     		}
     		var item = new Document(data.id, characters);
-	    	var result = classifier.classify(item);
+	    	var result = classifier.classify(item, callback);
 	    	console.log('expected result: ' + data.category);
 	    	console.log(result);
     	});
