@@ -17,14 +17,14 @@ sys.setdefaultencoding('utf-8')
 
 sess = tf.InteractiveSession()
 
-with codecs.open('metadata.json.simp.json', encoding='UTF-8') as data_file:    
+with codecs.open('metadata.json', encoding='UTF-8') as data_file:    
     jsondata = json.load(data_file)
 
 contenttypes = jsondata["contenttypes"];
 contentTypeNum = len(contenttypes);
 roomtypes = jsondata["roomtypes"];
 roomTypeNum = len(roomtypes);
-trainingDataDir = '../designjsons-simptype'
+trainingDataDir = '../designjsons'
 trainingDataFiles = [item for item in os.listdir(trainingDataDir) if os.path.isfile(os.path.join(trainingDataDir, item))]
 trainingDataCount = len(trainingDataFiles);
 logger = logging.getLogger()
@@ -35,7 +35,7 @@ def read_test_sets(contentTypeNum, roomTypeNum):
 	trainingdata = numpy.zeros((0, contentTypeNum))
 	labels = numpy.zeros((0, roomTypeNum))
 
-	with codecs.open(os.path.join(testDataDir, 'olddesign5.json.simp.json'), encoding='UTF-8') as designfile:
+	with codecs.open(os.path.join(testDataDir, 'olddesign5.json'), encoding='UTF-8') as designfile:
 		designjson = json.load(designfile)
 
 	countIndex = 0
