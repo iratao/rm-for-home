@@ -18,6 +18,8 @@ sys.setdefaultencoding('utf-8')
 sess = tf.InteractiveSession()
 
 IS_SIMPLE_VERSION = False
+WANT_RESTORE = True
+
 if IS_SIMPLE_VERSION:
 	with codecs.open('metadata.json.simp.json', encoding='UTF-8') as data_file:    
 		jsondata = json.load(data_file)
@@ -45,6 +47,7 @@ else:
 	testDataDir = '../validators'
 
 testDataFiles = [item for item in os.listdir(testDataDir) if os.path.isfile(os.path.join(testDataDir, item))]
+
 
 
 def read_test_sets(contentTypeNum, roomTypeNum):
@@ -142,16 +145,25 @@ W = tf.Variable(tf.zeros([contentTypeNum, roomTypeNum]))
 b = tf.Variable(tf.zeros([roomTypeNum]))
 y = tf.nn.softmax(tf.matmul(x, W) + b)
 
-# Define loss and optimizer
-y_ = tf.placeholder(tf.float32, [None, roomTypeNum])
-cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
-train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
+saver = tf.train.Saver()
 
-tf.initialize_all_variables().run()
-# train_step.run({x: batch_xs, y_: batch_ys})
-for i in range(1000):
-	# batch_xs, batch_ys = dataset.train
-	train_step.run({x: batch_xs, y_: batch_ys})
+if WANT_RESTORE:
+	y_ = tf.placeholder(tf.float32, [None, roomTypeNum])
+	saver.restore(sess, 'roomtype-softmax')
+else:
+	# Define loss and optimizer
+	y_ = tf.placeholder(tf.float32, [None, roomTypeNum])
+	cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
+	train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
+
+	tf.initialize_all_variables().run()
+	# train_step.run({x: batch_xs, y_: batch_ys})
+	for i in range(1000):
+		# batch_xs, batch_ys = dataset.train
+		train_step.run({x: batch_xs, y_: batch_ys})
+
+	saver.save(sess, 'roomtype-softmax')
+
 
 prediction = tf.argmax(y, 1)
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
