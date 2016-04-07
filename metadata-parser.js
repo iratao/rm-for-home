@@ -17,8 +17,14 @@ var metadata = JSON.parse(fs.readFileSync(filename));
 // }
 /* If the contenttype has secondory type (e.g. xxx/xxx), we leave out the secondary category. */
 var contenttypes = metadata.contenttypes;
+var contenttypeNames = [];
+metadata.contenttypes = [];
 for (var i = 0; i < contenttypes.length; i++) {
-	metadata.contenttypes[i].name = contenttypes[i].name.split('/')[0];
+	var name = contenttypes[i].name.split('/')[0];
+	if (contenttypeNames.indexOf(name) === -1) {
+		contenttypeNames.push(name);
+		metadata.contenttypes.push({id: contenttypes[i].id, name: name});
+	}
 }
 
 fs.writeFile(filename + '.simp.json', JSON.stringify(metadata)); 
