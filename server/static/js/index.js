@@ -14,6 +14,30 @@
         }); 
 	};
 
+	function getNextPredict() {
+		$.ajax({
+            type: 'GET',
+            url: '/home/api/v1.0/predict_example',
+            success: showPredictResult,
+            error: showPredictErrorResult,
+        }); 
+	};
+
+	function showPredictResult(data) {
+		$('#mytable tbody').empty();
+		// $('#right_panel').append('<div class="row"><p>' + JSON.stringify(data) + '</p></div>')
+		Object.keys(data).forEach(function(key) {
+			if (key === 'image') {return;}
+			$('#mytable tbody').append('<tr><td>' + data[key].prediction + '</td><td>' + data[key].trueclass + '</td></tr>' );
+		});
+		$('#houseimg').attr('src', data.image)
+	};
+
+	function showPredictErrorResult(xhr, status, error) {
+		$('#right_panel').empty();
+		$('#right_panel').append('<div class="row"><p>' + JSON.stringify(data) + '</p></div>')
+	}
+
 	function getRoomType() {
 		$.ajax({
             type: 'POST',
@@ -73,6 +97,7 @@
 
 	window.onload = function() {
 		$("#add_button").click(getProductBySeekID);
+		$("#next_button").click(getNextPredict);
 	}
 
 

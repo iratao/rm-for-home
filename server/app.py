@@ -228,6 +228,7 @@ def nextexample():
 		designjson = json.load(designfile)
 	testdata, testlabel = read_test_sets_from_json(contentTypeNum, roomTypeNum, designjson)
 	result = {}
+	result['image'] = '/validator-img/' + filename[:-5] + '.png'
 	for i in range(len(testdata)):
 		index = sess.run(prediction, feed_dict={x: [testdata[i]]})[0]
 		result[i] = {}
